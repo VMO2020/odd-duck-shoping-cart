@@ -1,5 +1,5 @@
 'use strict';
-console.log('app.js works!');
+// console.log('app.js works!');
 
 // State object keeps track of the application state (all available products and current state of the user's cart)
 const state = {
@@ -11,23 +11,11 @@ const state = {
 const Cart = function (items) {
 	// this.items is an array of CartItem instances.
 	this.items = items;
-	this.addItem = function (product, quantity) {
-		// TODO: Fill in this instance method to create a new CartItem and add it to this.items
-		console.log('New cart item');
-	};
-	this.saveToLocalStorage = function () {
-		// TODO: Fill in this instance method to save the contents of the cart to localStorage
-	};
-	this.removeItem = function (item) {
-		// TODO: Fill in this instance method to remove one item from the cart.
-		// Note: You will have to decide what kind of parameter to pass in here!
-	};
-	this.updateCounter = function () {
-		// TODO: Update the cart count in the header nav with the number of items in the Cart
-	};
 };
 
-const allCartItems = [];
+// *************************************** Cart Items ***************************************
+
+let allCartItems = [];
 
 const CartItem = function (product, quantity) {
 	this.product = product;
@@ -90,9 +78,11 @@ generateCatalog();
 
 // ******************************************* DOM *******************************************
 // console.log(state.allProducts);
+
 // Selectors
 const select = document.getElementById('items');
 const quantity = document.getElementById('quantity');
+const cartContent = document.getElementById('cartContents');
 
 function createOptions() {
 	for (let i = 0; i < state.allProducts.length; i++) {
@@ -104,9 +94,51 @@ function createOptions() {
 	}
 }
 
+function createCartList() {
+	cartContent.innerHTML = '';
+	const h3 = document.createElement('h3');
+	h3.innerHTML = 'Cart preview: ';
+	cartContent.append(h3);
+
+	const table = document.createElement('table');
+
+	for (let i = 0; i < allCartItems.length; i++) {
+		const tr = document.createElement('tr');
+
+		const td = document.createElement('td');
+		td.innerHTML = allCartItems[i].product;
+		tr.append(td);
+
+		const td2 = document.createElement('td');
+		td2.innerHTML = allCartItems[i].quantity;
+		tr.append(td2);
+
+		cartContent.append(tr);
+	}
+}
+
 createOptions();
 
-// CART add Item
+// Update the contents of the cart from localStorage
+function loadAllCartItems() {
+	allCartItems = [];
+	let getCart = localStorage.getItem('cart');
+	if (getCart) {
+		let cart = JSON.parse(getCart);
+		allCartItems = cart;
+	}
+	createCartList();
+}
+
+loadAllCartItems();
+
+// Save the contents of the cart to localStorage
+function saveAllCartItems() {
+	let stringify = JSON.stringify(allCartItems);
+	localStorage.setItem('cart', stringify);
+}
+
+// Create a new CartItem and add it to this.items
 
 const submitButton = document.getElementById('catalog');
 
@@ -117,6 +149,8 @@ submitButton.addEventListener('submit', function (event) {
 
 	const newProduct = new CartItem(name, quantity);
 	allCartItems.push(newProduct);
-	console.log(allCartItems);
+	// console.log(allCartItems);
 	submitButton.reset();
+	saveAllCartItems();
+	createCartList();
 });

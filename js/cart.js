@@ -1,40 +1,60 @@
 /* global Cart */
 'use strict';
-console.log('cart.js works!');
+// console.log('cart.js works!');
 
-// Create an event listener so that when the delete link is clicked, the removeItemFromCart method is invoked.
-const table = document.getElementById('cart');
-table.addEventListener('click', removeItemFromCart);
+let allCartItems = [];
 
-function loadCart() {
-	const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-	state.cart = new Cart(cartItems);
+//  *********************** Update the contents of the cart from localStorage ***********************
+function loadAllCartItems() {
+	allCartItems = [];
+	let getCart = localStorage.getItem('cart');
+	if (getCart) {
+		let cart = JSON.parse(getCart);
+		allCartItems = cart;
+	}
+	createCartList();
 }
 
-// Make magic happen --- re-pull the Cart, clear out the screen and re-draw it
-function renderCart() {
-	loadCart();
-	clearCart();
-	showCart();
+loadAllCartItems();
+
+//  ************************* Save the contents of the cart to localStorage *************************
+function saveAllCartItems() {
+	let stringify = JSON.stringify(allCartItems);
+	localStorage.setItem('cart', stringify);
 }
 
-// TODO: Remove all of the rows (tr) in the cart table (tbody)
-function clearCart() {}
+//  ******************************* Create HTML cart table and render ********************************
+function createCartList() {
+	// Select
+	const tbody = document.querySelector('tbody');
+	// Reset
+	tbody.innerHTML = '';
 
-// TODO: Fill in the <tr>'s under the <tbody> for each item in the cart
-function showCart() {
-	// TODO: Find the table body
-	// TODO: Iterate over the items in the cart
-	// TODO: Create a TR
-	// TODO: Create a TD for the delete link, quantity,  and the item
-	// TODO: Add the TR to the TBODY and each of the TD's to the TR
+	for (let i = 0; i < allCartItems.length; i++) {
+		const tr = document.createElement('tr');
+
+		const td = document.createElement('td');
+		td.innerHTML = 'X';
+		// Create delete products
+		td.addEventListener('click', function () {
+			if (i > -1) {
+				// only splice array when item is found
+				allCartItems.splice(i, 1); // 2nd parameter means remove one item only
+				console.log(allCartItems);
+				saveAllCartItems();
+				createCartList();
+			}
+		});
+		tr.append(td);
+
+		const td2 = document.createElement('td');
+		td2.innerHTML = allCartItems[i].product;
+		tr.append(td2);
+
+		const td3 = document.createElement('td');
+		td3.innerHTML = allCartItems[i].quantity;
+		tr.append(td3);
+
+		tbody.append(tr);
+	}
 }
-
-function removeItemFromCart(event) {
-	// TODO: When a delete link is clicked, use cart.removeItem to remove the correct item
-	// TODO: Save the cart back to local storage
-	// TODO: Re-draw the cart table
-}
-
-// This will initialize the page and draw the cart on screen
-renderCart();
