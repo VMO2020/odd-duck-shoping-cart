@@ -1,9 +1,6 @@
 'use strict';
 console.log('app.js works!');
 
-// Selectors
-const select = document.getElementById('items');
-
 // State object keeps track of the application state (all available products and current state of the user's cart)
 const state = {
 	allProducts: [],
@@ -16,6 +13,7 @@ const Cart = function (items) {
 	this.items = items;
 	this.addItem = function (product, quantity) {
 		// TODO: Fill in this instance method to create a new CartItem and add it to this.items
+		console.log('New cart item');
 	};
 	this.saveToLocalStorage = function () {
 		// TODO: Fill in this instance method to save the contents of the cart to localStorage
@@ -28,6 +26,8 @@ const Cart = function (items) {
 		// TODO: Update the cart count in the header nav with the number of items in the Cart
 	};
 };
+
+const allCartItems = [];
 
 const CartItem = function (product, quantity) {
 	this.product = product;
@@ -81,11 +81,42 @@ function generateCatalog() {
 		waterCan,
 		wineGlass
 	);
-	console.log(state.allProducts);
+	// console.log(state.allProducts);
 }
-
-// ******************************************* DOM *******************************************
 
 // **************************************** Initialize ****************************************
 // Initialize the app by creating the big list of products with images and names
 generateCatalog();
+
+// ******************************************* DOM *******************************************
+// console.log(state.allProducts);
+// Selectors
+const select = document.getElementById('items');
+const quantity = document.getElementById('quantity');
+
+function createOptions() {
+	for (let i = 0; i < state.allProducts.length; i++) {
+		let name = state.allProducts[i].name;
+		const option = document.createElement('option');
+		option.innerHTML = name;
+		option.setAttribute('value', name);
+		select.append(option);
+	}
+}
+
+createOptions();
+
+// CART add Item
+
+const submitButton = document.getElementById('catalog');
+
+submitButton.addEventListener('submit', function (event) {
+	event.preventDefault(); // Stope refresh page`
+	const name = event.target.items.value;
+	const quantity = event.target.quantity.value;
+
+	const newProduct = new CartItem(name, quantity);
+	allCartItems.push(newProduct);
+	console.log(allCartItems);
+	submitButton.reset();
+});
