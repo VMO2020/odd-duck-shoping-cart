@@ -1,1 +1,117 @@
 /* TODO: Make it awesome */
+
+/* Variables  */
+:root {
+	--main: blue;
+	--dark: black;
+	--light: white;
+	--mid: grey;
+	--border: lightblue;
+	--alert: orange;
+	--html: rgb(28, 28, 28);
+}
+
+/* General */
+html {
+	font-family: monospace;
+	background-color: var(--html);
+	font-size: 1rem;
+}
+
+body {
+	min-width: 320px;
+	max-width: 1280px;
+	min-height: 100svh;
+	padding: 0 0.2rem;
+	background-color: var(--light);
+}
+
+/* Header */
+header {
+	font-size: clamp(1rem, 3vw, 2.4rem);
+	background-color: var(--main);
+	color: var(--light);
+	padding: 0.5em;
+	display: flex;
+	justify-content: space-between;
+}
+
+a {
+	display: inline-block;
+	text-decoration: none;
+	margin-left: 1em;
+	color: inherit;
+	cursor: pointer;
+	border-bottom: 2px solid transparent;
+}
+
+a:hover {
+	border-bottom: 2px solid var(--alert);
+}
+
+ul {
+	display: flex;
+}
+
+/* Card */
+.card header h1 {
+	color: var(--alert);
+	width: 100%;
+	text-align: center;
+	font-size: clamp(1.5rem, 4vw, 3.4rem);
+	/* border-bottom: 2px solid var(--alert); */
+}
+
+.copy {
+	margin: 2rem;
+}
+
+.copy ol li {
+	letter-spacing: 0.01em;
+	line-height: 1.6;
+	margin: 1em;
+	list-style-type: circle;
+}
+
+/* Catalog */
+#catalog {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+legend {
+	font-size: clamp(1.2rem, 2.6vw, 2.4rem);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+input {
+	margin: 2em auto;
+}
+
+/*  Table */
+table {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 2rem 0;
+}
+
+th,
+td {
+	border: 1px solid;
+	padding: 0.5em 1em;
+}
+
+/* Footer */
+footer {
+	min-height: 3rem;
+	padding: 0.5rem 0;
+	color: var(--main);
+	background-color: var(--main);
+}
+footer p {
+	text-align: center;
+	color: var(--light);
+	line-height: 3;
+}
