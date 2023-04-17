@@ -84,6 +84,7 @@ const select = document.getElementById('items');
 const quantity = document.getElementById('quantity');
 const cartContent = document.getElementById('cartContents');
 
+// Create HTML options
 function createOptions() {
 	for (let i = 0; i < state.allProducts.length; i++) {
 		let name = state.allProducts[i].name;
@@ -94,6 +95,7 @@ function createOptions() {
 	}
 }
 
+// Create HTML table
 function createCartList() {
 	cartContent.innerHTML = '';
 	const h3 = document.createElement('h3');
